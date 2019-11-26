@@ -175,3 +175,10 @@ CLOSED     3 The connection is closed or couldn't be opened.
 ## License
 
 MIT
+
+## Background connect
+
+1. remove dist/\* in .gitignore
+2. run build to generate dist folder
+3. install [react-native-background-timer](https://github.com/ocetnik/react-native-background-timer)
+   in your project
