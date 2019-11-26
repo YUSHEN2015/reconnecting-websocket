@@ -11,7 +11,8 @@
         "member-ordering": false,
         "max-classes-per-file": false,
         "interface-name": false,
-        "semicolon": false
+        "semicolon": false,
+        "ordered-imports": false
     },
     "rulesDirectory": []
 }

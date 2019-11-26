@@ -11,6 +11,7 @@ import {
     WebSocketEventListenerMap,
     WebSocketEventMap,
 } from './events';
+import BackgroundTimer from 'react-native-background-timer';
 
 const getGlobalWebSocket = (): WebSocket | undefined => {
     if (typeof WebSocket !== 'undefined') {
@@ -322,7 +323,7 @@ export default class ReconnectingWebSocket {
 
     private _wait(): Promise<void> {
         return new Promise(resolve => {
-            setTimeout(resolve, this._getNextDelay());
+            BackgroundTimer.setTimeout(resolve, this._getNextDelay());
         });
     }
 
@@ -382,7 +383,10 @@ export default class ReconnectingWebSocket {
                 this._connectLock = false;
                 this._addListeners();
 
-                this._connectTimeout = setTimeout(() => this._handleTimeout(), connectionTimeout);
+                this._connectTimeout = BackgroundTimer.setTimeout(
+                    () => this._handleTimeout(),
+                    connectionTimeout,
+                );
             });
     }
 
@@ -427,8 +431,8 @@ export default class ReconnectingWebSocket {
         this._debug('open event');
         const {minUptime = DEFAULT.minUptime} = this._options;
 
-        clearTimeout(this._connectTimeout);
-        this._uptimeTimeout = setTimeout(() => this._acceptOpen(), minUptime);
+        BackgroundTimer.clearTimeout(this._connectTimeout);
+        this._uptimeTimeout = BackgroundTimer.setTimeout(() => this._acceptOpen(), minUptime);
 
         // @ts-ignore
         this._ws!.binaryType = this._binaryType;
@@ -504,7 +508,7 @@ export default class ReconnectingWebSocket {
     }
 
     private _clearTimeouts() {
-        clearTimeout(this._connectTimeout);
-        clearTimeout(this._uptimeTimeout);
+        BackgroundTimer.clearTimeout(this._connectTimeout);
+        BackgroundTimer.clearTimeout(this._uptimeTimeout);
     }
 }
